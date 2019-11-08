@@ -84,7 +84,7 @@ try (Reader reader = new FileReader("/path/to/schema.yml");
 
 Sometimes different types can be user in schema depending on environment. A good example would be JSON: an application may use json type in production environment (such as pSQL or MySQL) but use TEXT instead in integration tests with H2 (where JSON type is not support). In that case placeholders can be used in YAML:
 
-``` yaml
+```yaml
 tables:
   - table: person
     columns:
