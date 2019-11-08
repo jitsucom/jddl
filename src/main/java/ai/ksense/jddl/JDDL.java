@@ -55,7 +55,7 @@ public class JDDL {
         return generatePatchInternal().stream().map(TableStatement::toSQLStatement).collect(Collectors.toList());
     }
 
-    protected void applyChanges() {
+    public void applyChanges() {
         generatePatchInternal().forEach(statementModel -> {
             try (Statement statement = connection.createStatement()) {
                 statement.execute(statementModel.toSQLStatement());
