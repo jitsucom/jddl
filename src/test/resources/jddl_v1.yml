@@ -1,0 +1,14 @@
+tables:
+  - table: sql_table
+    columns:
+      - name: 'ID'
+        type: 'int'
+        non-null: 'true'
+        options: 'PRIMARY KEY'
+      - name: 'LastName'
+        type: 'varchar(255)'
+        non-null: true
+      - name: 'FirstName'
+        type: 'varchar(255)'
+      - name: 'Age'
+        type: 'int'

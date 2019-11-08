@@ -1,0 +1,18 @@
+tables:
+  - table: sql_table
+    columns:
+      - name: 'ID'
+        type: int
+        non-null: true
+        options: 'AUTOINCREMENT PRIMARY KEY'
+      - name: 'LastName'
+        type: varchar(255)
+        non-null: true
+      - name: 'Age'
+        type: int
+      - name: 'City'
+        type: varchar(255)
+        default: '${city:Dublin}'
+      - name: 'credit_score'
+        type: int
+        default: '${credit_score_default}'
