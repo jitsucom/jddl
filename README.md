@@ -75,7 +75,7 @@ try (Reader reader = new FileReader("/path/to/schema.yml");
 
 ## Limitations
 
-* jDDL doesn't support sync of indeces
+* jDDL doesn't support sync of indexes
 * jDDL doesn't support the change of types. If column kept the name but type has changed. 
 
 ## Advanced Features
