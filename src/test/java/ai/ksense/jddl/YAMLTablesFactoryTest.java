@@ -18,11 +18,11 @@ public class YAMLTablesFactoryTest {
             Assert.assertEquals(4, table.getColumns().size());
         }
 
-        try (InputStreamReader r = new InputStreamReader(getClass().getResourceAsStream("/jddl_v5.yml"))) {
+        try (InputStreamReader r = new InputStreamReader(getClass().getResourceAsStream("/jddl_v2.yml"))) {
             List<Table> tables = new YAMLTablesFactory(r).getSchema().getTables();
             Assert.assertEquals(1, tables.size());
             Table table = tables.iterator().next();
-            Assert.assertEquals(4, table.getColumns().size());
+            Assert.assertEquals(5, table.getColumns().size());
         }
     }
 
