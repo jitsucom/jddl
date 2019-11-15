@@ -1,9 +1,11 @@
 package ai.ksense.jddl;
 
-public abstract class TableStatement {
+import ai.ksense.jddl.schema.Column;
+
+public abstract class DDLStatement {
     protected final String tableName;
 
-    protected TableStatement(String tableName) {
+    protected DDLStatement(String tableName) {
         this.tableName = tableName;
     }
 
@@ -14,9 +16,9 @@ public abstract class TableStatement {
         return toSQLStatement();
     }
 
-    static class CreateTable extends TableStatement {
+    public static class CreateTable extends DDLStatement {
 
-        protected CreateTable(String tableName) {
+        public CreateTable(String tableName) {
             super(tableName);
         }
 
@@ -26,7 +28,7 @@ public abstract class TableStatement {
         }
     }
 
-    static class DeleteColumn extends TableStatement {
+    public static class DeleteColumn extends DDLStatement {
         private final String columnName;
 
         protected DeleteColumn(String tableName, String columnName) {
@@ -40,10 +42,10 @@ public abstract class TableStatement {
         }
     }
 
-    static class AddColumn extends TableStatement {
+    public static class AddColumn extends DDLStatement {
         private final Column column;
 
-        protected AddColumn(String tableName, Column column) {
+        public AddColumn(String tableName, Column column) {
             super(tableName);
             this.column = column;
         }

@@ -12,6 +12,10 @@ class Placeholders {
         this.placeholders = placeholders;
     }
 
+    public String apply(String where) {
+        return apply(where, true);
+
+    }
     public String apply(String where, boolean strict) {
         StringBuilder b = new StringBuilder();
         int lastStart = 0;

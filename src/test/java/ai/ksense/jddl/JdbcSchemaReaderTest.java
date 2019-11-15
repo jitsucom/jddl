@@ -1,12 +1,12 @@
 package ai.ksense.jddl;
 
+import ai.ksense.jddl.schema.Table;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,24 +27,25 @@ public class JdbcSchemaReaderTest extends H2Test {
     private void createTables(Connection connection) {
         List<Table> tables = read("/jddl_v1.yml");
         for (Table table : tables) {
-            List<TableStatement> statements = table.createTable(true);
+            List<DDLStatement> statements = table.createTable(true);
             statements.forEach(System.out::println);
             statements.forEach(st -> {
                 try {
                     connection.createStatement().execute(st.toSQLStatement());
                 } catch (SQLException e) {
-                    throw new RuntimeException(e.getMessage(), e);
+                    throw new JDDLException("Can't execute '" + st.toSQLStatement() + "'", e);
                 }
             });
         }
     }
 
 
+
     public List<Table> read(String classpath) {
         try (InputStreamReader r = new InputStreamReader(getClass().getResourceAsStream(classpath))) {
             return new YAMLTablesFactory(r).getSchema().getTables();
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new JDDLException(e.getMessage(), e);
         }
     }
 

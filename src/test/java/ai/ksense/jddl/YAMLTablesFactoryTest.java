@@ -1,5 +1,6 @@
 package ai.ksense.jddl;
 
+import ai.ksense.jddl.schema.Table;
 import org.junit.Assert;
 import org.junit.Test;
 

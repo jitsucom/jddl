@@ -1,5 +1,8 @@
 package ai.ksense.jddl;
 
+import ai.ksense.jddl.schema.Column;
+import ai.ksense.jddl.schema.DBSchema;
+import ai.ksense.jddl.schema.Table;
 import com.google.common.base.Strings;
 
 import java.sql.Connection;
@@ -9,15 +12,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcSchemaReader implements SchemaReader {
+public class JdbcSchemaReader  {
     private Connection connection;
 
     public JdbcSchemaReader(Connection connection) {
         this.connection = connection;
     }
 
-    @Override
-    public DatabaseSchema getSchema() {
+    public DBSchema getSchema() {
         List<Table> tables = new ArrayList<>();
         try {
             DatabaseMetaData dbmd = connection.getMetaData();
@@ -28,9 +30,9 @@ public class JdbcSchemaReader implements SchemaReader {
                 tables.add(getTable(connection.getMetaData(), tableName));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new JDDLException("Can't read table schema from JDBC connection", e);
         }
-        return new DatabaseSchema(tables);
+        return new DBSchema(tables);
     }
 
     private Table getTable(DatabaseMetaData metaData, String tableName) throws SQLException {

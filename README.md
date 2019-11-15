@@ -56,7 +56,7 @@ Apply changes to database
 ```java
 try (Reader reader = new FileReader("/path/to/schema.yml"); 
      Connection conn = getConnection()) {
-     new JDDL(reader, conn).applyChanges();    
+     new JDDL(reader, conn).applyChanges(conn);    
 }
 
 ```
@@ -66,7 +66,7 @@ Generate list of statements
 ```java
 try (Reader reader = new FileReader("/path/to/schema.yml"); 
      Connection conn = getConnection()) {
-     List<String> statements = new JDDL(reader, conn).generatePatch();    
+     List<String> statements = new JDDL(reader, conn).generatePatch(conn);    
      //apply `statements` manually
 }
 ```
@@ -101,7 +101,7 @@ Following Java code will appy placeholders:
 ```java
 try (Reader reader = new FileReader("/path/to/schema.yml");
      Connection conn = getConnection()) {
-			new JDDL(reader, conn, Map.of("DATA_COLUMN_NAME", "data")).applyChanges();
+			new JDDL(reader, conn).applyChanges(Map.of("DATA_COLUMN_NAME", "data"), conn);
 }
 
 ```
@@ -118,6 +118,25 @@ tables:
         options: 'PRIMARY KEY'
       - name: 'data'
         type: 'text'
+```
+
+### Java Schema Definition
+
+Table schema can be defined inside a builder-style code instead of separate YML. All bulder entry-points (for schema, tables and columns) could be find in DBSchemaCode. Example:
+
+```java
+import static ai.ksense.jddl.schema.DBSchemaBuilder.*;
+
+public class TheClass {
+    public void sync(Connection connection) {
+        DBSchema dbSchema = schema(table("TableName")
+                .addColumn(column("id", "varchar", 100).notNull(true))
+                .addColumn(column("time", "timstamp"))
+                .addColumn(column("event", "varchar", 200).notNull(true))
+        ).build();
+        new JDDL(dbSchema, connection).applyChanges(connection);
+    }
+}
 ```
 
 

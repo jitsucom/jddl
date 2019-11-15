@@ -1,5 +1,6 @@
-package ai.ksense.jddl;
+package ai.ksense.jddl.schema;
 
+import ai.ksense.jddl.DDLStatement;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -39,8 +40,8 @@ public class Table {
         return Collections.unmodifiableList(columns);
     }
 
-    public List<TableStatement> createTable(boolean includeCreateTable) {
-        ArrayList<TableStatement> statements = new ArrayList<>(includeCreateTable ? Collections.singletonList(new TableStatement.CreateTable(name)) : Collections.emptyList());
+    public List<DDLStatement> createTable(boolean includeCreateTable) {
+        ArrayList<DDLStatement> statements = new ArrayList<>(includeCreateTable ? Collections.singletonList(new DDLStatement.CreateTable(name)) : Collections.emptyList());
         statements.addAll(columns.stream().map(c -> c.toAddColumnStatement(name)).collect(Collectors.toList()));
         return statements;
     }

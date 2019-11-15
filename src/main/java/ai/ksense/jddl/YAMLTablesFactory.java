@@ -1,14 +1,17 @@
 package ai.ksense.jddl;
 
+import ai.ksense.jddl.schema.DBSchema;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.List;
 
-public class YAMLTablesFactory implements SchemaReader {
+/**
+ * Reads schema from YAML format. The format documentation: https://githib.com/ksense-co/jddl
+ */
+public class YAMLTablesFactory {
     private static ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
     static {
         YAML_MAPPER.setVisibility(YAML_MAPPER.getDeserializationConfig().getDefaultVisibilityChecker()
@@ -25,12 +28,11 @@ public class YAMLTablesFactory implements SchemaReader {
         this.reader = reader;
     }
 
-    @Override
-    public DatabaseSchema getSchema() {
+    public DBSchema getSchema() {
         try {
-            return new DatabaseSchema(YAML_MAPPER.readValue(reader, DatabaseSchema.class).getTables());
+            return new DBSchema(YAML_MAPPER.readValue(reader, DBSchema.class).getTables());
         } catch (IOException e) {
-            throw new RuntimeException("Can't read DDL: " + e.getMessage(), e);
+            throw new JDDLException("Can't read DDL: " + e.getMessage(), e);
         }
     }
 

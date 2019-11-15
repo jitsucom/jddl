@@ -1,5 +1,7 @@
 package ai.ksense.jddl;
 
+import ai.ksense.jddl.schema.Column;
+import ai.ksense.jddl.schema.Table;
 import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
@@ -18,12 +20,12 @@ public class TableDiffGenerator {
         this.expected = expected;
     }
 
-    public List<TableStatement> diff() {
-        List<TableStatement> statements = new ArrayList<>();
+    public List<DDLStatement> diff() {
+        List<DDLStatement> statements = new ArrayList<>();
         for (Column actualColumn : actual.getColumns()) {
             Column expectedColumn = expected.getColumnByName(actualColumn.getName());
             if (expectedColumn == null) {
-                statements.add(new TableStatement.DeleteColumn(tableName, actualColumn.getName()));
+                statements.add(new DDLStatement.DeleteColumn(tableName, actualColumn.getName()));
             } else {
                 checkCompatibility(expectedColumn, actualColumn);
             }
@@ -32,7 +34,7 @@ public class TableDiffGenerator {
         for (Column expectedColumn : expected.getColumns()) {
             Column actualColumn = actual.getColumnByName(expectedColumn.getName());
             if (actualColumn == null) {
-                statements.add(new TableStatement.AddColumn(tableName, expectedColumn));
+                statements.add(new DDLStatement.AddColumn(tableName, expectedColumn));
             } else {
                 checkCompatibility(expectedColumn, actualColumn);
             }

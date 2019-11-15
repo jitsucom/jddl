@@ -1,4 +1,4 @@
-package ai.ksense.jddl;
+package ai.ksense.jddl.schema;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,8 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class DatabaseSchema {
-    private DatabaseSchema() {
+
+/**
+ * Contains schema DDL
+ */
+public class DBSchema {
+    private DBSchema() {
     }
 
     @JsonProperty(value = "tables", required = true)
@@ -17,16 +21,16 @@ class DatabaseSchema {
     @JsonIgnore
     private Map<String, Table> tablesByName;
 
-    public DatabaseSchema(List<Table> tables) {
+    public DBSchema(List<Table> tables) {
         this.tables = tables;
         tablesByName = tables.stream().collect(Collectors.toMap(t -> t.getName().toUpperCase(), t -> t));
     }
 
-    List<Table> getTables() {
+    public List<Table> getTables() {
         return Collections.unmodifiableList(tables);
     }
 
-    Table getTableByName(String name) {
+    public Table getTableByName(String name) {
         return tablesByName.get(name.toUpperCase());
     }
 }
