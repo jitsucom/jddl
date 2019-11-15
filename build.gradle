@@ -1,9 +1,16 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
 }
+
+group = 'ai.ksense.jddl'
+version = '0.2-SNAPSHOT'
+
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+    //withJavadocJar()
+    //withSourcesJar()
 }
 
 repositories {
@@ -16,6 +23,21 @@ dependencies {
     implementation 'com.google.guava:guava:28.1-jre'
     testImplementation 'junit:junit:4.12'
     testImplementation "com.h2database:h2:1.4.199"
+}
 
-
+publishing {
+    repositories {
+        maven {
+            url "s3://mvn-oss.ksense.ai.s3.amazonaws.com"
+            credentials(AwsCredentials) {
+                accessKey "AKIA5GSFYAX2RISYISMD"
+                secretKey "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"
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
 }

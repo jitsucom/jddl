@@ -24,7 +24,7 @@ public abstract class DDLStatement {
 
         @Override
         public String toSQLStatement() {
-            return String.format("CREATE TABLE %s ()", tableName);
+            return String.format("CREATE TABLE \"%s\" ()", tableName);
         }
     }
 
@@ -38,7 +38,7 @@ public abstract class DDLStatement {
 
         @Override
         public String toSQLStatement() {
-            return String.format("ALTER TABLE `%s` DROP COLUMN `%s`;", tableName, columnName);
+            return String.format("ALTER TABLE \"%s\" DROP COLUMN \"%s\";", tableName, columnName);
         }
     }
 
@@ -52,9 +52,9 @@ public abstract class DDLStatement {
 
         @Override
         public String toSQLStatement() {
-            StringBuilder b = new StringBuilder("ALTER TABLE `")
-                    .append(tableName).append("` ADD ").append(" `")
-                    .append(column.getName()).append("` ")
+            StringBuilder b = new StringBuilder("ALTER TABLE \"")
+                    .append(tableName).append("\" ADD ").append(" \"")
+                    .append(column.getName()).append("\" ")
                     .append(column.getType());
             if (column.getDefaultValue() != null) {
                 b.append(" DEFAULT '").append(column.getDefaultValue()).append("'");
