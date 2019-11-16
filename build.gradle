@@ -30,8 +30,8 @@ publishing {
         maven {
             url "s3://mvn-oss.ksense.ai.s3.amazonaws.com"
             credentials(AwsCredentials) {
-                accessKey "AKIA5GSFYAX2RISYISMD"
-                secretKey "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"
+                accessKey = project.findProperty("aws.access.key") ?: System.getenv("AWS_ACCESS_KEY")
+                secretKey = project.findProperty("aws.secret.key") ?: System.getenv("AWS_SECRET_KEY")
             }
         }
     }

@@ -13,7 +13,7 @@ public class DBSchemaBuilder {
     }
 
     public static ColumnBuilder column(String name, String type, Object typeParams) {
-        return column(name, String.format(type, typeParams));
+        return column(name, String.format("%s(%s)", type, typeParams));
     }
 
     public static TableBuilder table(String tableName) {
