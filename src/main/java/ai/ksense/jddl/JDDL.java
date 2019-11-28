@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 public class JDDL {
     private final DBSchema expectedSchema;
     private final DBSchema actualSchema;
+    private final DDLSyntaxSettings ddlSyntaxSettings = new DDLSyntaxSettings();
+
 
     public JDDL(Reader ymlReader, Connection connection)  {
         this(new YAMLTablesFactory(ymlReader).getSchema(), connection);
@@ -48,7 +50,7 @@ public class JDDL {
     public List<String> generatePatch(Map<String, String> placeholders) {
         Function<String, String> placeholdersExecutor = getPlaceholdersExecutor(placeholders);
         return generatePatchInternal().stream()
-                .map(DDLStatement::toSQLStatement)
+                .map(ddlStatement -> ddlStatement.toSQLStatement(ddlSyntaxSettings))
                 .map(placeholdersExecutor)
                 .collect(Collectors.toList());
     }
@@ -70,7 +72,7 @@ public class JDDL {
     public void applyChanges(Map<String, String> placeholders, Connection connection) {
         Function<String, String> placeholdersExecutor = getPlaceholdersExecutor(placeholders);
         generatePatchInternal().forEach(statementModel -> {
-            String sql = placeholdersExecutor.apply(statementModel.toSQLStatement());
+            String sql = placeholdersExecutor.apply(statementModel.toSQLStatement(ddlSyntaxSettings));
             try (Statement statement = connection.createStatement()) {
                 statement.execute(sql);
             } catch (SQLException e) {
@@ -79,5 +81,7 @@ public class JDDL {
         });
     }
 
-
+    public DDLSyntaxSettings getDdlSyntaxSettings() {
+        return ddlSyntaxSettings;
+    }
 }

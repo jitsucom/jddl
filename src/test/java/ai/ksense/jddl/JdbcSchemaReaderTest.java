@@ -31,9 +31,9 @@ public class JdbcSchemaReaderTest extends H2Test {
             statements.forEach(System.out::println);
             statements.forEach(st -> {
                 try {
-                    connection.createStatement().execute(st.toSQLStatement());
+                    connection.createStatement().execute(st.toSQLStatement(new DDLSyntaxSettings()));
                 } catch (SQLException e) {
-                    throw new JDDLException("Can't execute '" + st.toSQLStatement() + "'", e);
+                    throw new JDDLException("Can't execute '" + st.toSQLStatement(new DDLSyntaxSettings()) + "'", e);
                 }
             });
         }

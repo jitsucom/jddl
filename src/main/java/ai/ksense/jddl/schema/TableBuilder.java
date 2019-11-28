@@ -22,6 +22,16 @@ public class TableBuilder {
         return this;
     }
 
+    public TableBuilder addIndex(Index index) {
+        return this;
+    }
+    public TableBuilder addIndex(IndexBuilder index) {
+        return this;
+    }
+    public TableBuilder primaryKey(String ... columns) {
+        return this;
+    }
+
     public Table build() {
         return new Table(name, columns);
     }

@@ -1,20 +1,9 @@
-plugins {
-    id 'java-library'
-    id 'maven-publish'
-}
-
-group = 'ai.ksense.jddl'
-version = '0.2-SNAPSHOT'
-
+apply plugin: 'jacoco'
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
     //withJavadocJar()
     //withSourcesJar()
-}
-
-repositories {
-    jcenter()
 }
 
 dependencies {
@@ -25,19 +14,3 @@ dependencies {
     testImplementation "com.h2database:h2:1.4.199"
 }
 
-publishing {
-    repositories {
-        maven {
-            url "s3://mvn-oss.ksense.ai.s3.amazonaws.com"
-            credentials(AwsCredentials) {
-                accessKey = project.findProperty("aws.access.key") ?: System.getenv("AWS_ACCESS_KEY")
-                secretKey = project.findProperty("aws.secret.key") ?: System.getenv("AWS_SECRET_KEY")
-            }
-        }
-    }
-    publications {
-        maven(MavenPublication) {
-            from components.java
-        }
-    }
-}

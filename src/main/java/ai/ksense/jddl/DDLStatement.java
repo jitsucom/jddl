@@ -9,11 +9,11 @@ public abstract class DDLStatement {
         this.tableName = tableName;
     }
 
-    public abstract String toSQLStatement();
+    public abstract String toSQLStatement(DDLSyntaxSettings syntaxSettings);
 
     @Override
     public String toString() {
-        return toSQLStatement();
+        return toSQLStatement(new DDLSyntaxSettings());
     }
 
     public static class CreateTable extends DDLStatement {
@@ -23,8 +23,8 @@ public abstract class DDLStatement {
         }
 
         @Override
-        public String toSQLStatement() {
-            return String.format("CREATE TABLE \"%s\" ()", tableName);
+        public String toSQLStatement(DDLSyntaxSettings syntax) {
+            return String.format("CREATE TABLE %s ()", syntax.id(tableName));
         }
     }
 
@@ -37,8 +37,8 @@ public abstract class DDLStatement {
         }
 
         @Override
-        public String toSQLStatement() {
-            return String.format("ALTER TABLE \"%s\" DROP COLUMN \"%s\";", tableName, columnName);
+        public String toSQLStatement(DDLSyntaxSettings syntax) {
+            return String.format("ALTER TABLE %s DROP COLUMN %s;", syntax.id(tableName), syntax.id(columnName));
         }
     }
 
@@ -51,10 +51,10 @@ public abstract class DDLStatement {
         }
 
         @Override
-        public String toSQLStatement() {
-            StringBuilder b = new StringBuilder("ALTER TABLE \"")
-                    .append(tableName).append("\" ADD ").append(" \"")
-                    .append(column.getName()).append("\" ")
+        public String toSQLStatement(DDLSyntaxSettings syntax) {
+            StringBuilder b = new StringBuilder("ALTER TABLE ")
+                    .append(syntax.id(tableName)).append(" ADD ").append(" ")
+                    .append(syntax.id(column.getName())).append(" ")
                     .append(column.getType());
             if (column.getDefaultValue() != null) {
                 b.append(" DEFAULT '").append(column.getDefaultValue()).append("'");

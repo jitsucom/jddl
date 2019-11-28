@@ -16,7 +16,7 @@ public class IndexBuilder {
         this.name = String.join("_", columnsName);
     }
 
-    public Index index() {
+    public Index build() {
         return new Index(name, columnsName);
     }
 }

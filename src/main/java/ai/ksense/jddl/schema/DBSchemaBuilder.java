@@ -36,10 +36,6 @@ public class DBSchemaBuilder {
         return new IndexBuilder(Arrays.asList(columns));
     }
 
-    public static IndexBuilder index(String name, String ... columns) {
-        return new IndexBuilder(name, Arrays.asList(columns));
-    }
-
     public static DBSchemaBuilder schema(TableBuilder table) {
         return schema().addTable(table);
     }
